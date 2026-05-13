@@ -19,6 +19,8 @@ import { Route as HostTodosRouteImport } from './routes/host.todos'
 import { Route as HostRequestsRouteImport } from './routes/host.requests'
 import { Route as HostQuestionRouteImport } from './routes/host.question'
 import { Route as HostAvailabilityRouteImport } from './routes/host.availability'
+import { Route as TSlugBookSlotIdRouteImport } from './routes/t.$slug.book.$slotId'
+import { Route as TSlugEventEventIdJoinRouteImport } from './routes/t.$slug.event.$eventId.join'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -70,6 +72,16 @@ const HostAvailabilityRoute = HostAvailabilityRouteImport.update({
   path: '/availability',
   getParentRoute: () => HostRoute,
 } as any)
+const TSlugBookSlotIdRoute = TSlugBookSlotIdRouteImport.update({
+  id: '/book/$slotId',
+  path: '/book/$slotId',
+  getParentRoute: () => TSlugRoute,
+} as any)
+const TSlugEventEventIdJoinRoute = TSlugEventEventIdJoinRouteImport.update({
+  id: '/event/$eventId/join',
+  path: '/event/$eventId/join',
+  getParentRoute: () => TSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,8 +92,10 @@ export interface FileRoutesByFullPath {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
-  '/t/$slug': typeof TSlugRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
   '/host/': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,8 +105,10 @@ export interface FileRoutesByTo {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
-  '/t/$slug': typeof TSlugRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
   '/host': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,8 +120,10 @@ export interface FileRoutesById {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
-  '/t/$slug': typeof TSlugRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
   '/host/': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,6 +138,8 @@ export interface FileRouteTypes {
     | '/host/trip'
     | '/t/$slug'
     | '/host/'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,6 +151,8 @@ export interface FileRouteTypes {
     | '/host/trip'
     | '/t/$slug'
     | '/host'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
   id:
     | '__root__'
     | '/'
@@ -143,13 +165,15 @@ export interface FileRouteTypes {
     | '/host/trip'
     | '/t/$slug'
     | '/host/'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HostRoute: typeof HostRouteWithChildren
   LoginRoute: typeof LoginRoute
-  TSlugRoute: typeof TSlugRoute
+  TSlugRoute: typeof TSlugRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -224,6 +248,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostAvailabilityRouteImport
       parentRoute: typeof HostRoute
     }
+    '/t/$slug/book/$slotId': {
+      id: '/t/$slug/book/$slotId'
+      path: '/book/$slotId'
+      fullPath: '/t/$slug/book/$slotId'
+      preLoaderRoute: typeof TSlugBookSlotIdRouteImport
+      parentRoute: typeof TSlugRoute
+    }
+    '/t/$slug/event/$eventId/join': {
+      id: '/t/$slug/event/$eventId/join'
+      path: '/event/$eventId/join'
+      fullPath: '/t/$slug/event/$eventId/join'
+      preLoaderRoute: typeof TSlugEventEventIdJoinRouteImport
+      parentRoute: typeof TSlugRoute
+    }
   }
 }
 
@@ -247,11 +285,23 @@ const HostRouteChildren: HostRouteChildren = {
 
 const HostRouteWithChildren = HostRoute._addFileChildren(HostRouteChildren)
 
+interface TSlugRouteChildren {
+  TSlugBookSlotIdRoute: typeof TSlugBookSlotIdRoute
+  TSlugEventEventIdJoinRoute: typeof TSlugEventEventIdJoinRoute
+}
+
+const TSlugRouteChildren: TSlugRouteChildren = {
+  TSlugBookSlotIdRoute: TSlugBookSlotIdRoute,
+  TSlugEventEventIdJoinRoute: TSlugEventEventIdJoinRoute,
+}
+
+const TSlugRouteWithChildren = TSlugRoute._addFileChildren(TSlugRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HostRoute: HostRouteWithChildren,
   LoginRoute: LoginRoute,
-  TSlugRoute: TSlugRoute,
+  TSlugRoute: TSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
