@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as HostRouteImport } from './routes/host'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HostIndexRouteImport } from './routes/host.index'
+import { Route as TSlugRouteImport } from './routes/t.$slug'
 import { Route as HostTripRouteImport } from './routes/host.trip'
 import { Route as HostTodosRouteImport } from './routes/host.todos'
 import { Route as HostRequestsRouteImport } from './routes/host.requests'
@@ -38,6 +39,11 @@ const HostIndexRoute = HostIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => HostRoute,
+} as any)
+const TSlugRoute = TSlugRouteImport.update({
+  id: '/t/$slug',
+  path: '/t/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const HostTripRoute = HostTripRouteImport.update({
   id: '/trip',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRoute
   '/host/': typeof HostIndexRoute
 }
 export interface FileRoutesByTo {
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRoute
   '/host': typeof HostIndexRoute
 }
 export interface FileRoutesById {
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/host/requests': typeof HostRequestsRoute
   '/host/todos': typeof HostTodosRoute
   '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRoute
   '/host/': typeof HostIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/host/requests'
     | '/host/todos'
     | '/host/trip'
+    | '/t/$slug'
     | '/host/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/host/requests'
     | '/host/todos'
     | '/host/trip'
+    | '/t/$slug'
     | '/host'
   id:
     | '__root__'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/host/requests'
     | '/host/todos'
     | '/host/trip'
+    | '/t/$slug'
     | '/host/'
   fileRoutesById: FileRoutesById
 }
@@ -137,6 +149,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HostRoute: typeof HostRouteWithChildren
   LoginRoute: typeof LoginRoute
+  TSlugRoute: typeof TSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/host/'
       preLoaderRoute: typeof HostIndexRouteImport
       parentRoute: typeof HostRoute
+    }
+    '/t/$slug': {
+      id: '/t/$slug'
+      path: '/t/$slug'
+      fullPath: '/t/$slug'
+      preLoaderRoute: typeof TSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/host/trip': {
       id: '/host/trip'
@@ -231,7 +251,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HostRoute: HostRouteWithChildren,
   LoginRoute: LoginRoute,
+  TSlugRoute: TSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
