@@ -9,38 +9,189 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as HostRouteImport } from './routes/host'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HostIndexRouteImport } from './routes/host.index'
+import { Route as TSlugRouteImport } from './routes/t.$slug'
+import { Route as HostTripRouteImport } from './routes/host.trip'
+import { Route as HostTodosRouteImport } from './routes/host.todos'
+import { Route as HostRequestsRouteImport } from './routes/host.requests'
+import { Route as HostQuestionRouteImport } from './routes/host.question'
+import { Route as HostAvailabilityRouteImport } from './routes/host.availability'
+import { Route as TSlugBookSlotIdRouteImport } from './routes/t.$slug.book.$slotId'
+import { Route as TSlugEventEventIdJoinRouteImport } from './routes/t.$slug.event.$eventId.join'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostRoute = HostRouteImport.update({
+  id: '/host',
+  path: '/host',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HostIndexRoute = HostIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HostRoute,
+} as any)
+const TSlugRoute = TSlugRouteImport.update({
+  id: '/t/$slug',
+  path: '/t/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostTripRoute = HostTripRouteImport.update({
+  id: '/trip',
+  path: '/trip',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostTodosRoute = HostTodosRouteImport.update({
+  id: '/todos',
+  path: '/todos',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostRequestsRoute = HostRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostQuestionRoute = HostQuestionRouteImport.update({
+  id: '/question',
+  path: '/question',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostAvailabilityRoute = HostAvailabilityRouteImport.update({
+  id: '/availability',
+  path: '/availability',
+  getParentRoute: () => HostRoute,
+} as any)
+const TSlugBookSlotIdRoute = TSlugBookSlotIdRouteImport.update({
+  id: '/book/$slotId',
+  path: '/book/$slotId',
+  getParentRoute: () => TSlugRoute,
+} as any)
+const TSlugEventEventIdJoinRoute = TSlugEventEventIdJoinRouteImport.update({
+  id: '/event/$eventId/join',
+  path: '/event/$eventId/join',
+  getParentRoute: () => TSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/host': typeof HostRouteWithChildren
+  '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
+  '/host/': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
+  '/host': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/host': typeof HostRouteWithChildren
+  '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
+  '/t/$slug': typeof TSlugRouteWithChildren
+  '/host/': typeof HostIndexRoute
+  '/t/$slug/book/$slotId': typeof TSlugBookSlotIdRoute
+  '/t/$slug/event/$eventId/join': typeof TSlugEventEventIdJoinRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/host'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/t/$slug'
+    | '/host/'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/t/$slug'
+    | '/host'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
+  id:
+    | '__root__'
+    | '/'
+    | '/host'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/t/$slug'
+    | '/host/'
+    | '/t/$slug/book/$slotId'
+    | '/t/$slug/event/$eventId/join'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HostRoute: typeof HostRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  TSlugRoute: typeof TSlugRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host': {
+      id: '/host'
+      path: '/host'
+      fullPath: '/host'
+      preLoaderRoute: typeof HostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +199,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/host/': {
+      id: '/host/'
+      path: '/'
+      fullPath: '/host/'
+      preLoaderRoute: typeof HostIndexRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/t/$slug': {
+      id: '/t/$slug'
+      path: '/t/$slug'
+      fullPath: '/t/$slug'
+      preLoaderRoute: typeof TSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host/trip': {
+      id: '/host/trip'
+      path: '/trip'
+      fullPath: '/host/trip'
+      preLoaderRoute: typeof HostTripRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/todos': {
+      id: '/host/todos'
+      path: '/todos'
+      fullPath: '/host/todos'
+      preLoaderRoute: typeof HostTodosRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/requests': {
+      id: '/host/requests'
+      path: '/requests'
+      fullPath: '/host/requests'
+      preLoaderRoute: typeof HostRequestsRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/question': {
+      id: '/host/question'
+      path: '/question'
+      fullPath: '/host/question'
+      preLoaderRoute: typeof HostQuestionRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/availability': {
+      id: '/host/availability'
+      path: '/availability'
+      fullPath: '/host/availability'
+      preLoaderRoute: typeof HostAvailabilityRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/t/$slug/book/$slotId': {
+      id: '/t/$slug/book/$slotId'
+      path: '/book/$slotId'
+      fullPath: '/t/$slug/book/$slotId'
+      preLoaderRoute: typeof TSlugBookSlotIdRouteImport
+      parentRoute: typeof TSlugRoute
+    }
+    '/t/$slug/event/$eventId/join': {
+      id: '/t/$slug/event/$eventId/join'
+      path: '/event/$eventId/join'
+      fullPath: '/t/$slug/event/$eventId/join'
+      preLoaderRoute: typeof TSlugEventEventIdJoinRouteImport
+      parentRoute: typeof TSlugRoute
+    }
   }
 }
 
+interface HostRouteChildren {
+  HostAvailabilityRoute: typeof HostAvailabilityRoute
+  HostQuestionRoute: typeof HostQuestionRoute
+  HostRequestsRoute: typeof HostRequestsRoute
+  HostTodosRoute: typeof HostTodosRoute
+  HostTripRoute: typeof HostTripRoute
+  HostIndexRoute: typeof HostIndexRoute
+}
+
+const HostRouteChildren: HostRouteChildren = {
+  HostAvailabilityRoute: HostAvailabilityRoute,
+  HostQuestionRoute: HostQuestionRoute,
+  HostRequestsRoute: HostRequestsRoute,
+  HostTodosRoute: HostTodosRoute,
+  HostTripRoute: HostTripRoute,
+  HostIndexRoute: HostIndexRoute,
+}
+
+const HostRouteWithChildren = HostRoute._addFileChildren(HostRouteChildren)
+
+interface TSlugRouteChildren {
+  TSlugBookSlotIdRoute: typeof TSlugBookSlotIdRoute
+  TSlugEventEventIdJoinRoute: typeof TSlugEventEventIdJoinRoute
+}
+
+const TSlugRouteChildren: TSlugRouteChildren = {
+  TSlugBookSlotIdRoute: TSlugBookSlotIdRoute,
+  TSlugEventEventIdJoinRoute: TSlugEventEventIdJoinRoute,
+}
+
+const TSlugRouteWithChildren = TSlugRoute._addFileChildren(TSlugRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HostRoute: HostRouteWithChildren,
+  LoginRoute: LoginRoute,
+  TSlugRoute: TSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
