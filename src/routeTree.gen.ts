@@ -13,6 +13,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as HostRouteImport } from './routes/host'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HostIndexRouteImport } from './routes/host.index'
+import { Route as HostTripRouteImport } from './routes/host.trip'
+import { Route as HostTodosRouteImport } from './routes/host.todos'
+import { Route as HostRequestsRouteImport } from './routes/host.requests'
+import { Route as HostQuestionRouteImport } from './routes/host.question'
+import { Route as HostAvailabilityRouteImport } from './routes/host.availability'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -34,16 +39,51 @@ const HostIndexRoute = HostIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HostRoute,
 } as any)
+const HostTripRoute = HostTripRouteImport.update({
+  id: '/trip',
+  path: '/trip',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostTodosRoute = HostTodosRouteImport.update({
+  id: '/todos',
+  path: '/todos',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostRequestsRoute = HostRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostQuestionRoute = HostQuestionRouteImport.update({
+  id: '/question',
+  path: '/question',
+  getParentRoute: () => HostRoute,
+} as any)
+const HostAvailabilityRoute = HostAvailabilityRouteImport.update({
+  id: '/availability',
+  path: '/availability',
+  getParentRoute: () => HostRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/host': typeof HostRouteWithChildren
   '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
   '/host/': typeof HostIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
   '/host': typeof HostIndexRoute
 }
 export interface FileRoutesById {
@@ -51,14 +91,46 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/host': typeof HostRouteWithChildren
   '/login': typeof LoginRoute
+  '/host/availability': typeof HostAvailabilityRoute
+  '/host/question': typeof HostQuestionRoute
+  '/host/requests': typeof HostRequestsRoute
+  '/host/todos': typeof HostTodosRoute
+  '/host/trip': typeof HostTripRoute
   '/host/': typeof HostIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/host' | '/login' | '/host/'
+  fullPaths:
+    | '/'
+    | '/host'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/host/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/host'
-  id: '__root__' | '/' | '/host' | '/login' | '/host/'
+  to:
+    | '/'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/host'
+  id:
+    | '__root__'
+    | '/'
+    | '/host'
+    | '/login'
+    | '/host/availability'
+    | '/host/question'
+    | '/host/requests'
+    | '/host/todos'
+    | '/host/trip'
+    | '/host/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -97,14 +169,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostIndexRouteImport
       parentRoute: typeof HostRoute
     }
+    '/host/trip': {
+      id: '/host/trip'
+      path: '/trip'
+      fullPath: '/host/trip'
+      preLoaderRoute: typeof HostTripRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/todos': {
+      id: '/host/todos'
+      path: '/todos'
+      fullPath: '/host/todos'
+      preLoaderRoute: typeof HostTodosRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/requests': {
+      id: '/host/requests'
+      path: '/requests'
+      fullPath: '/host/requests'
+      preLoaderRoute: typeof HostRequestsRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/question': {
+      id: '/host/question'
+      path: '/question'
+      fullPath: '/host/question'
+      preLoaderRoute: typeof HostQuestionRouteImport
+      parentRoute: typeof HostRoute
+    }
+    '/host/availability': {
+      id: '/host/availability'
+      path: '/availability'
+      fullPath: '/host/availability'
+      preLoaderRoute: typeof HostAvailabilityRouteImport
+      parentRoute: typeof HostRoute
+    }
   }
 }
 
 interface HostRouteChildren {
+  HostAvailabilityRoute: typeof HostAvailabilityRoute
+  HostQuestionRoute: typeof HostQuestionRoute
+  HostRequestsRoute: typeof HostRequestsRoute
+  HostTodosRoute: typeof HostTodosRoute
+  HostTripRoute: typeof HostTripRoute
   HostIndexRoute: typeof HostIndexRoute
 }
 
 const HostRouteChildren: HostRouteChildren = {
+  HostAvailabilityRoute: HostAvailabilityRoute,
+  HostQuestionRoute: HostQuestionRoute,
+  HostRequestsRoute: HostRequestsRoute,
+  HostTodosRoute: HostTodosRoute,
+  HostTripRoute: HostTripRoute,
   HostIndexRoute: HostIndexRoute,
 }
 
