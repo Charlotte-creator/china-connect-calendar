@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HostRouteImport } from './routes/host'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HostIndexRouteImport } from './routes/host.index'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -28,34 +29,41 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HostIndexRoute = HostIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HostRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/host': typeof HostRoute
+  '/host': typeof HostRouteWithChildren
   '/login': typeof LoginRoute
+  '/host/': typeof HostIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/host': typeof HostRoute
   '/login': typeof LoginRoute
+  '/host': typeof HostIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/host': typeof HostRoute
+  '/host': typeof HostRouteWithChildren
   '/login': typeof LoginRoute
+  '/host/': typeof HostIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/host' | '/login'
+  fullPaths: '/' | '/host' | '/login' | '/host/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/host' | '/login'
-  id: '__root__' | '/' | '/host' | '/login'
+  to: '/' | '/login' | '/host'
+  id: '__root__' | '/' | '/host' | '/login' | '/host/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HostRoute: typeof HostRoute
+  HostRoute: typeof HostRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
 
@@ -82,14 +90,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/host/': {
+      id: '/host/'
+      path: '/'
+      fullPath: '/host/'
+      preLoaderRoute: typeof HostIndexRouteImport
+      parentRoute: typeof HostRoute
+    }
   }
 }
 
+interface HostRouteChildren {
+  HostIndexRoute: typeof HostIndexRoute
+}
+
+const HostRouteChildren: HostRouteChildren = {
+  HostIndexRoute: HostIndexRoute,
+}
+
+const HostRouteWithChildren = HostRoute._addFileChildren(HostRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HostRoute: HostRoute,
+  HostRoute: HostRouteWithChildren,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
