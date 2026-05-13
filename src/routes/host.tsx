@@ -54,7 +54,7 @@ function HostLayout() {
           {NAV.map(n => {
             const active = n.exact ? location.pathname === n.to : location.pathname.startsWith(n.to);
             return (
-              <Link key={n.to} to={n.to}
+              <Link key={n.to} to={n.to as string as any}
                 className={`px-3 py-2 rounded-md text-sm whitespace-nowrap ${active ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground hover:bg-accent/50"}`}>
                 {n.label}
               </Link>
