@@ -7,14 +7,14 @@ export const Route = createFileRoute("/host")({
   component: HostLayout,
 });
 
-const NAV = [
+const NAV: { to: string; label: string; exact?: boolean }[] = [
   { to: "/host", label: "Dashboard", exact: true },
   { to: "/host/trip", label: "Trip & cities" },
   { to: "/host/availability", label: "Availability" },
   { to: "/host/question", label: "Screening Q" },
   { to: "/host/requests", label: "Join requests" },
   { to: "/host/todos", label: "To-dos" },
-] as const;
+];
 
 function HostLayout() {
   const navigate = useNavigate();
