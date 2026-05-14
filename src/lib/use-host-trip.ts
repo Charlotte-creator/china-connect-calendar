@@ -37,6 +37,7 @@ export function useHostTrip() {
       if (created) setTrip(created);
     }
     setLoading(false);
+    loadingRef.current = false;
   }
 
   useEffect(() => { load(); }, []);
