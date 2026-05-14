@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -8,8 +8,11 @@ export type Trip = Database["public"]["Tables"]["trips"]["Row"];
 export function useHostTrip() {
   const [trip, setTrip] = useState<Trip | null>(null);
   const [loading, setLoading] = useState(true);
+  const loadingRef = useRef(false);
 
   async function load() {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     const { data: userRes } = await supabase.auth.getUser();
     const uid = userRes.user?.id;
@@ -34,6 +37,7 @@ export function useHostTrip() {
       if (created) setTrip(created);
     }
     setLoading(false);
+    loadingRef.current = false;
   }
 
   useEffect(() => { load(); }, []);
